@@ -8,10 +8,10 @@ const statusFilters = [
 ] as const;
 
 const statusColors = {
-  "未着手": "text-gray-800 bg-gray-100 hover:bg-gray-200 data-[state=active]:bg-gray-300",
+  "未着手": "text-gray-800 bg-gray-100 hover:bg-gray-200",
   "進行中": "text-blue-800 bg-blue-100 hover:bg-blue-200",
   "完了": "text-green-800 bg-green-100 hover:bg-green-200",
-  "all": "text-gray-800 bg-white hover:bg-gray-50 data-[state=active]:bg-gray-100"
+  "all": "text-gray-800 bg-gray-100 hover:bg-gray-200"
 } as const;
 
 interface StatusFilterProps {
@@ -26,8 +26,9 @@ export default function StatusFilter({ currentFilter, onFilterChange }: StatusFi
         <Button
           key={filter.value}
           onClick={() => onFilterChange(filter.value)}
-          data-state={currentFilter === filter.value ? "active" : "inactive"}
-          className={`${statusColors[filter.value as keyof typeof statusColors]}`}
+          className={`${statusColors[filter.value as keyof typeof statusColors]} ${
+            currentFilter === filter.value ? "ring-2 ring-offset-2" : ""
+          }`}
           variant="ghost"
         >
           {filter.label}
