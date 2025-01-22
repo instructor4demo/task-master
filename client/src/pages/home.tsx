@@ -3,9 +3,11 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import TaskList from "@/components/task-list";
 import TaskDialog from "@/components/task-dialog";
+import StatusFilter from "@/components/status-filter";
 
 export default function Home() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [currentFilter, setCurrentFilter] = useState("all");
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -21,8 +23,13 @@ export default function Home() {
           </Button>
         </header>
 
-        <TaskList />
-        
+        <StatusFilter
+          currentFilter={currentFilter}
+          onFilterChange={setCurrentFilter}
+        />
+
+        <TaskList filter={currentFilter} />
+
         <TaskDialog 
           open={isDialogOpen} 
           onOpenChange={setIsDialogOpen}

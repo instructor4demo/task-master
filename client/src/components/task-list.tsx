@@ -3,7 +3,11 @@ import TaskCard from "./task-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { SelectTask } from "@db/schema";
 
-export default function TaskList() {
+interface TaskListProps {
+  filter: string;
+}
+
+export default function TaskList({ filter }: TaskListProps) {
   const { data: tasks, isLoading } = useQuery<SelectTask[]>({
     queryKey: ["/api/tasks"],
   });
@@ -26,9 +30,21 @@ export default function TaskList() {
     );
   }
 
+  const filteredTasks = filter === "all" 
+    ? tasks 
+    : tasks.filter(task => task.status === filter);
+
+  if (!filteredTasks.length) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-600">該当するタスクがありません</p>
+      </div>
+    );
+  }
+
   return (
     <div>
-      {tasks.map((task) => (
+      {filteredTasks.map((task) => (
         <TaskCard key={task.id} task={task} />
       ))}
     </div>
