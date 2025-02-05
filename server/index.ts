@@ -24,8 +24,10 @@ if (fs.existsSync(envPath)) {
 }
 
 // dotenvの設定
-const result = dotenv.config({ path: envPath });
-console.log('5. dotenv config result:', result);
+if (process.env.NODE_ENV === 'development') {
+  const result = dotenv.config({ path: envPath });
+}
+//console.log('5. dotenv config result:', result);
 console.log('6. process.env.DATABASE_URL:', process.env.DATABASE_URL);
 console.log('==================');
 

@@ -13,8 +13,10 @@ console.log('2. DB Resolved .env path:', envPath);
 console.log('3. DB .env file exists:', fs.existsSync(envPath));
 
 // dotenvの設定
-const result = dotenv.config({ path: envPath });
-console.log('4. DB dotenv config result:', result);
+if (process.env.NODE_ENV === 'development') {
+  const result = dotenv.config({ path: envPath });
+}
+//console.log('4. DB dotenv config result:', result);
 console.log('5. DB DATABASE_URL:', process.env.DATABASE_URL);
 console.log('==================');
 
