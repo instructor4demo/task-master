@@ -2,16 +2,31 @@ import { useQuery } from "@tanstack/react-query";
 import TaskCard from "./task-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { SelectTask } from "@db/schema";
+import { useToast } from "@/hooks/use-toast";
+import { useEffect } from "react";
 
 interface TaskListProps {
   filter: string;
 }
 
 export default function TaskList({ filter }: TaskListProps) {
-  const { data: tasks, isLoading } = useQuery<SelectTask[]>({
+  const { data: tasks, isLoading, isError } = useQuery<SelectTask[]>({
     queryKey: ["/api/tasks"],
   });
+  const { toast } = useToast();
 
+  useEffect(() => {
+    if (isError) {
+      toast({
+        title: "エラーが発生しました",
+        description: "タスクの取得に失敗しました",
+        variant: "destructive",
+      });
+    }
+  }, [isError, toast]);
+
+  if (isError) return null;
+  
   if (isLoading) {
     return (
       <div className="space-y-4">

@@ -1,36 +1,3 @@
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-import * as dotenv from 'dotenv';
-import fs from 'fs';
-
-// パスの設定とデバッグ情報の出力
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const rootDir = join(__dirname, '..');
-const envPath = join(rootDir, '.env');
-
-console.log('=== Debug Info ===');
-console.log('1. Current working directory:', process.cwd());
-console.log('2. Resolved .env path:', envPath);
-console.log('3. .env file exists:', fs.existsSync(envPath));
-
-if (fs.existsSync(envPath)) {
-  try {
-    const envContents = fs.readFileSync(envPath, 'utf8');
-    console.log('4. .env file contents:', envContents);
-  } catch (error) {
-    console.error('Error reading .env file:', error);
-  }
-}
-
-// dotenvの設定
-if (process.env.NODE_ENV === 'development') {
-  const result = dotenv.config({ path: envPath });
-}
-//console.log('5. dotenv config result:', result);
-console.log('6. process.env.DATABASE_URL:', process.env.DATABASE_URL);
-console.log('==================');
-
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";

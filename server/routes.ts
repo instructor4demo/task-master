@@ -37,6 +37,10 @@ export function registerRoutes(app: Express): Server {
 
   // タスクの削除
   app.delete("/api/tasks/:id", async (req, res) => {
+    const task = await db.select().from(tasks).where(eq(tasks.id, parseInt(req.params.id))).limit(1);
+    if (task.length === 0) {
+      return res.status(404).end();
+    }
     await db.delete(tasks).where(eq(tasks.id, parseInt(req.params.id)));
     res.status(204).end();
   });
